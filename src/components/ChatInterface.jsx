@@ -43,7 +43,7 @@ const ChatInterface = ({ webhookUrl, onConnectionChange }) => {
           {
             id: 1,
             type: 'bot',
-            content: 'Hello! I\'m DataQuery, your AI data analysis assistant. I can help you understand your Google Sheets data through natural conversation. What would you like to know about your data?',
+            content: 'Hello! I\'m DataQuery, your AI data analysis assistant. I can analyze your Google Sheets data and answer questions about it. I can also send formatted HTML emails with your data insights. What would you like to know about your data?',
             timestamp: new Date()
           }
         ])
@@ -122,12 +122,22 @@ const ChatInterface = ({ webhookUrl, onConnectionChange }) => {
     }
   }
 
-  const suggestedQuestions = [
-    "What are the main trends in my data?",
-    "Show me the top performing items",
-    "What's the average value for each category?",
-    "Are there any outliers in my dataset?",
-    "How has performance changed over time?"
+  const quickActions = [
+    {
+      title: "Campaign Analysis",
+      actions: [
+        "What is the total spend across all campaigns?",
+        "How much did we spend on Paid Search only?",
+        "What are the month-over-month changes in ad spend?"
+      ]
+    },
+    {
+      title: "Performance Metrics",
+      actions: [
+        "Which campaigns are top-performing by conversion rate?",
+        "What is the cost per lead for each channel?"
+      ]
+    }
   ]
 
   return (
@@ -138,13 +148,13 @@ const ChatInterface = ({ webhookUrl, onConnectionChange }) => {
           <Bot className="w-6 h-6 text-white" />
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-gray-800">Data Analysis Chat</h3>
+          <h3 className="text-lg font-semibold text-gray-800 font-poppins">Data Analysis Chat</h3>
           <div className="flex items-center space-x-2">
             <div className={`w-2 h-2 rounded-full ${
               connectionStatus === 'connected' ? 'bg-green-500' : 
               connectionStatus === 'connecting' ? 'bg-yellow-500' : 'bg-red-500'
             }`} />
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-gray-600 font-inter">
               {connectionStatus === 'connected' ? 'Connected to Data Service' :
                connectionStatus === 'connecting' ? 'Connecting...' : 'Connection Error'}
             </span>
@@ -152,23 +162,30 @@ const ChatInterface = ({ webhookUrl, onConnectionChange }) => {
         </div>
       </div>
 
-      {/* Suggested Questions */}
-      {messages.length === 0 && (
-        <div className="mb-6">
-          <p className="text-sm text-gray-600 mb-3">Try asking me about your data:</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {suggestedQuestions.map((question, index) => (
-              <button
-                key={index}
-                onClick={() => setInputMessage(question)}
-                className="text-left p-3 bg-white/50 hover:bg-white/80 rounded-lg border border-gray-200 hover:border-primary-300 transition-all text-sm text-gray-700 hover:text-primary-700"
-              >
-                {question}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+                      {/* Quick Actions */}
+                {messages.filter(msg => msg.type === 'user').length === 0 && (
+                  <div className="mb-6">
+                    <p className="text-sm text-gray-600 mb-4 font-inter">Quick actions to get started:</p>
+                    <div className="space-y-4">
+                      {quickActions.map((section, sectionIndex) => (
+                        <div key={sectionIndex}>
+                          <h4 className="text-sm font-semibold text-gray-700 mb-2 font-poppins">{section.title}</h4>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                            {section.actions.map((action, actionIndex) => (
+                              <button
+                                key={actionIndex}
+                                onClick={() => setInputMessage(action)}
+                                className="text-left p-3 bg-white/50 hover:bg-white/80 rounded-lg border border-gray-200 hover:border-primary-300 transition-all text-sm text-gray-700 hover:text-primary-700 font-inter"
+                              >
+                                {action}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
       {/* Messages */}
       <div className="h-96 overflow-y-auto mb-6 scrollbar-hide">
@@ -192,8 +209,8 @@ const ChatInterface = ({ webhookUrl, onConnectionChange }) => {
               <div className={`chat-bubble ${
                 message.type === 'user' ? 'user-bubble' : 'bot-bubble'
               }`}>
-                <p className="text-sm leading-relaxed">{message.content}</p>
-                <span className="text-xs opacity-70 mt-1 block">
+                <p className="text-sm leading-relaxed font-inter">{message.content}</p>
+                <span className="text-xs opacity-70 mt-1 block font-inter">
                   {message.timestamp.toLocaleTimeString()}
                 </span>
               </div>
@@ -256,13 +273,13 @@ const ChatInterface = ({ webhookUrl, onConnectionChange }) => {
         <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
           <div className="flex items-center space-x-2">
             <Database className="w-4 h-4 text-red-500" />
-            <span className="text-sm text-red-700">
+            <span className="text-sm text-red-700 font-inter">
               Connection failed. Please check your webhook URL and try again.
             </span>
           </div>
           <button
             onClick={testConnection}
-            className="mt-2 text-sm text-red-600 hover:text-red-800 underline"
+            className="mt-2 text-sm text-red-600 hover:text-red-800 underline font-inter"
           >
             Retry Connection
           </button>

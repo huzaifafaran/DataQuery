@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'poppins': ['Poppins', 'sans-serif'],
+        'inter': ['Inter', 'sans-serif'],
+      },
       colors: {
         primary: {
           50: '#eff6ff',
@@ -42,6 +46,10 @@ export default {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-20px)' },
         }
+      },
+      screens: {
+        'xs': '475px',
+        '3xl': '1600px',
       }
     },
   },

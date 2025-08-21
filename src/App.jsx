@@ -4,9 +4,65 @@ import { OrbitControls, Stars } from '@react-three/drei'
 import ChatInterface from './components/ChatInterface'
 import Header from './components/Header'
 import FloatingData from './components/FloatingData'
+import Features from './components/Features'
+import About from './components/About'
+import Support from './components/Support'
+import Footer from './components/Footer'
 
 function App() {
   const [isConnected, setIsConnected] = useState(false)
+  const [activeTab, setActiveTab] = useState('chat')
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'chat':
+        return (
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-4 font-poppins">
+                DataQuery
+              </h1>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto font-inter mb-4">
+                Ask questions about your Google Sheets data and get instant insights.
+              </p>
+              <p className="text-sm text-gray-500 font-inter">
+                Built by Nyrix
+              </p>
+            </div>
+            <ChatInterface
+              webhookUrl="https://nyrix.app.n8n.cloud/webhook/edca0f0a-77c3-43e5-8ece-e514a29446f5/chat"
+              onConnectionChange={setIsConnected}
+            />
+          </div>
+        )
+      case 'features':
+        return <Features onTabChange={setActiveTab} />
+      case 'about':
+        return <About onTabChange={setActiveTab} />
+      case 'support':
+        return <Support />
+      default:
+        return (
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
+              <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-4 font-poppins">
+                DataQuery
+              </h1>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto font-inter mb-4">
+                Ask questions about your Google Sheets data and get instant insights.
+              </p>
+              <p className="text-sm text-gray-500 font-inter">
+                Built by Nyrix
+              </p>
+            </div>
+            <ChatInterface
+              webhookUrl="https://nyrix.app.n8n.cloud/webhook/edca0f0a-77c3-43e5-8ece-e514a29446f5/chat"
+              onConnectionChange={setIsConnected}
+            />
+          </div>
+        )
+    }
+  }
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -23,25 +79,15 @@ function App() {
 
       {/* Content */}
       <div className="relative z-10 min-h-screen">
-        <Header isConnected={isConnected} />
+        <Header 
+          isConnected={isConnected} 
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+        />
         <main className="container mx-auto px-4 py-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-8">
-              <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-4">
-                DataQuery
-              </h1>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Your intelligent data analysis companion. Ask questions about your Google Sheets data 
-                and get instant insights through natural conversation.
-              </p>
-            </div>
-            
-            <ChatInterface 
-              webhookUrl="https://nyrix.app.n8n.cloud/webhook/edca0f0a-77c3-43e5-8ece-e514a29446f5/chat"
-              onConnectionChange={setIsConnected}
-            />
-          </div>
+          {renderContent()}
         </main>
+        <Footer />
       </div>
     </div>
   )

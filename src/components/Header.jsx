@@ -1,7 +1,8 @@
 import React from 'react'
 import { Database, Wifi, WifiOff } from 'lucide-react'
+import Navigation from './Navigation'
 
-const Header = ({ isConnected }) => {
+const Header = ({ isConnected, activeTab, onTabChange }) => {
   return (
     <header className="glass-effect sticky top-0 z-20">
       <div className="container mx-auto px-4 py-4">
@@ -31,11 +32,7 @@ const Header = ({ isConnected }) => {
               )}
             </div>
             
-            <div className="hidden md:flex items-center space-x-6 text-sm text-gray-600">
-              <a href="#features" className="hover:text-primary-600 transition-colors">Features</a>
-              <a href="#about" className="hover:text-primary-600 transition-colors">About</a>
-              <a href="#support" className="hover:text-primary-600 transition-colors">Support</a>
-            </div>
+            <Navigation activeTab={activeTab} onTabChange={onTabChange} />
           </div>
         </div>
       </div>
